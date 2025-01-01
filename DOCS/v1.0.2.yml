@@ -1,0 +1,551 @@
+openapi: 3.0.3
+info:
+  title: OpenDating
+  description: |-
+    OpenDating: Take control of your dating life (well, the front end at least).
+    
+    A headless dating app. No b*llshit - see exactly how many swipes you received. 
+    
+    **Step 1:** Create an account by verifying your phone number.
+    
+    **Step 2:** Add information to your profile
+    
+    - [App store](https://github.com/swagger-api/swagger-petstore)
+    - [Original HN Post]()
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: justin.supergame@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.2
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://192.168.1.146:3000/api
+tags:
+  - name: auth
+    description: Create a new account and get an API token
+  - name: profile
+    description: View or update your account
+  - name: matching
+    description: For swiping and matching
+paths:
+  /profile:
+    get:
+      tags:
+        - profile
+      security:
+        - bearerAuth: [ ]
+      description: Get your own profile
+      responses:
+        '200':
+          description: 'Returns your profile'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: 'Not authorized (no token)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - profile
+      security:
+        - bearerAuth: [ ]
+      description: Update your profile. `first_name`, `date_of_birth`, and `phone_number` cannot be changed once created. Location can only be updated once per week
+      requestBody:
+        $ref: '#/components/requestBodies/Profile'
+      responses:
+        '200':
+          description: 'Returns updated profile'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: 'Invalid input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+            # /profile/status:
+            #   get:
+            #     tags:
+            #       - profile
+            #     security:
+            #       - bearerAuth: []
+            #     description: Returns the eligibility of your account.
+            #     responses:
+            #       '200':
+            #         description: The eligibility of your account.
+            #         content:
+            #           application/json:
+            #             schema:
+          #               type: object
+          #               properties:
+          #                 is_valid: boolean
+          #                 missing_fields:
+
+    # /profile/stats:
+    #   get:
+    #     tags:
+    #       - profile
+    #     security:
+    #       - bearerAuth: []
+    #     description: Returns your statistics. No b*llshit - see exactly how many `RIGHT` and `LEFT` swipes your profile received. See when your account was created
+    #     responses:
+
+
+
+  /matches:
+    get:
+      tags:
+        - matching
+      security:
+        - bearerAuth: [ ]
+      description: >
+        Get recent matches, sorted by match date (newest first).
+        Returns a paginated list of profiles you've matched with.
+        Uses simple offset/limit based pagination.
+      parameters:
+        - name: limit
+          in: query
+          description: Number of matches to return per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: offset
+          in: query
+          description: Number of matches to skip
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: 'Recent matches'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - matches
+                  - pagination
+                properties:
+                  matches:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProfileMatch'
+                  pagination:
+                    type: object
+                    required:
+                      - total
+                      - limit
+                      - offset
+                    properties:
+                      total:
+                        type: integer
+                        description: Total number of matches available
+                        example: 42
+                      limit:
+                        type: integer
+                        description: Number of matches per page
+                        example: 10
+                      offset:
+                        type: integer
+                        description: Current offset
+                        example: 0
+                      next_offset:
+                        type: integer
+                        nullable: true
+                        description: Offset for the next page (null if no more matches)
+                        example: 20
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /suggestions/{id}/{direction}:
+    post:
+      tags:
+        - matching
+      summary: Submit a swipe decision
+      description: >
+        Submit a swipe decision on a profile. The profile must have been previously
+        received from the suggestions feed (GET /suggestions). A right swipe indicates interest, while
+        a left swipe indicates disinterest.
+        
+        Note: This action cannot be undone.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: 'Profile ID from the suggestions feed'
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: direction
+          description: 'Right if you like them, left otherwise'
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [ left, right ]
+      responses:
+        '200':
+          description: 'Swipe recorded successfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - match_status
+                properties:
+                  success:
+                    type: boolean
+                    description: Whether the swipe was recorded successfully
+                    example: true
+                  match_status:
+                    type: string
+                    enum: [ none, pending, matched ]
+                    description: >
+                      Current match status:
+                      * none - No match possible (left swipe or they already left swiped you)
+                      * pending - Right swipe recorded, waiting for their decision
+                      * matched - Mutual match formed
+                    example: pending
+                  match:
+                    type: object
+                    description: Present only when match_status is "matched"
+                    required:
+                      - id
+                      - profile
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for this match
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: When the match was formed
+                      profile:
+                        $ref: '#/components/schemas/ProfileMatch'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /suggestions:
+    get:
+      tags:
+        - matching
+      security:
+        - bearerAuth: [ ]
+      description: Get profile suggestions based on age, location, and bio (in that order).
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+      responses:
+        '200':
+          description: 'List of suggested profiles'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Here are your suggestions. Hint: submit preferences at POST /matches, using the provided id.'
+                  suggestions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProfileSuggestion'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/{phone_number}:
+    get:
+      tags:
+        - auth
+      description: Request verification code for phone number. Phone number should be in standard string format with country code included.
+      parameters:
+        - name: phone_number
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^\+[1-9]\d{1,14}$'
+            description: E.164 formatted phone number
+      responses:
+        '200':
+          description: 'Status update'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Verification code sent. Hint: Get your verification code and submit it to /auth/{phone_number}/{code}'
+        '400':
+          description: 'Invalid phone number format'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/{phone_number}/{code}:
+    get:
+      tags:
+        - auth
+      description: Verify phone number and get authentication token
+      parameters:
+        - name: phone_number
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^\+[1-9]\d{1,14}$'
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{6}$'
+      responses:
+        '200':
+          description: 'Successful verification'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Verification successful. Hint: Put your new token in the Headers of subsequent requests. Try GET /suggestions next.'
+                  token:
+                    type: string
+                    description: JWT token for authentication
+        '400':
+          description: 'Invalid input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: 'Verification service error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  properties:
+    firstName:
+      type: string
+      example: 'Linus'
+      maxLength: 100
+    phoneNumber:
+      type: string
+      pattern: '^\+[1-9]\d{1,14}$'
+      description: 'E.164 formatted phone number'
+      example: '+12125551234'
+    photos:
+      type: array
+      items:
+        type: string
+        format: uri
+      maxItems: 6
+      description: 'Array of image URLs'
+      example: [
+        'https://example.com/photos/1.jpg',
+        'https://example.com/photos/2.jpg'
+      ]
+    bio:
+      type: string
+      maxLength: 280
+      example: 'software engineer by day, baller by night. also love bouldering and videography.'
+    dateOfBirth:
+      type: string
+      format: date
+      example: '2000-01-01'
+    distance:
+      type: number
+      format: float
+      minimum: 0
+      description: 'Distance in kilometers from user'
+      example: 3.2
+    age:
+      type: integer
+      minimum: 18
+      maximum: 100
+      example: 25
+      description: 'Calculated age based on date_of_birth'
+    createdAt:
+      type: string
+      format: date-time
+      readOnly: true
+    expiresAt:
+      type: string
+      format: date-time
+      nullable: true
+      description: 'Profile expiration date. Null indicates no expiry'
+      example: '2029-11-03T00:00:00Z'
+    location:
+      type: array
+      description: "Coordinates [longitude, latitude]"
+      items:
+        type: number
+        format: float
+      minItems: 2
+      maxItems: 2
+      example: [ -73.935242, 40.730610 ]
+
+  schemas:
+    Profile:
+      type: object
+      description: 'Your profile. Keep this information private.'
+      required:
+        - first_name
+        - photos
+        - bio
+        - phone_number
+        - date_of_birth
+        - location
+      properties:
+        first_name:
+          $ref: '#/components/properties/firstName'
+        bio:
+          $ref: '#/components/properties/bio'
+        phone_number:
+          $ref: '#/components/properties/phoneNumber'
+        photos:
+          $ref: '#/components/properties/photos'
+        date_of_birth:
+          $ref: '#/components/properties/dateOfBirth'
+        location:
+          $ref: '#/components/properties/location'
+        expires_at:
+          $ref: '#/components/properties/expiresAt'
+        created_at:
+          $ref: '#/components/properties/createdAt'
+
+    ProfileSuggestion:
+      description: 'A suggested profile that you should swipe left/right on.'
+      type: object
+      required:
+        - id
+        - age
+        - distance
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 'Use this id to swipe left/right on this profile'
+          readOnly: true
+        first_name:
+          $ref: '#/components/properties/firstName'
+        photos:
+          $ref: '#/components/properties/photos'
+        bio:
+          $ref: '#/components/properties/bio'
+        age:
+          $ref: '#/components/properties/age'
+        distance:
+          $ref: '#/components/properties/distance'
+
+    ProfileMatch:
+      description: 'A profile that you have matched with!'
+      type: object
+      required:
+        - created_at
+        - first_name
+      properties:
+        matched_at:
+          description: 'When the match occurred'
+          $ref: '#/components/properties/createdAt'
+        first_name:
+          $ref: '#/components/properties/firstName'
+        phone_number:
+          $ref: '#/components/properties/phoneNumber'
+        photos:
+          $ref: '#/components/properties/photos'
+        secret_word:
+          type: string
+          description: A secret word shared between both users in the match that can be used to establish trust.
+          example: 'reindeer'
+
+    Error:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+            description: A description of the error
+            example: Something went wrong
+
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  requestBodies:
+    Profile:
+      description: Updated profile object
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bio:
+                $ref: '#/components/properties/bio'
+              photos:
+                $ref: '#/components/properties/photos'
+              location:
+                $ref: '#/components/properties/location'
+              expires_at:
+                $ref: '#/components/properties/expiresAt'
+              created_at:
+                $ref: '#/components/properties/createdAt'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
