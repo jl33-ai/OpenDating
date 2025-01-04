@@ -1,14 +1,13 @@
-This repository hosts the algorithm used by [OpenDating]() to generate recommended profiles.
 
-# why contribute?
+**OpenDating** is an open-source matchmaking engine. 
 
-Dating algorithms shape how people meet and form relationships online. By improving this open source matchmaker, you can directly influence how meaningful connections are made.
+We believe that forming relationships online should be an act of high transparency.
 
-# contributing
+OpenDating allows you to see:
+- All your account data
+- How your account is being interacted with
+- How matchmaking occurs
 
-- Fork the repository 
-- Create a feature branch 
-- Make your changes
-  - You can only edit `[src/matchmaker.ts]()`
-- Add tests for your changes
-- Submit a pull request
+**OpenDating** is accessible via a [simple API](). 
+
+This repository hosts the specification for [OpenDating]() as well as the algorithm used to generate recommended profiles.
