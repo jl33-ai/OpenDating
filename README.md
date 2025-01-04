@@ -1,10 +1,10 @@
-Core algorithm used by [OpenDating]() to generate recommended profiles.
+This repository hosts the algorithm used by [OpenDating]() to generate recommended profiles.
 
 # why contribute?
 
 Dating algorithms shape how people meet and form relationships online. By improving this open source matchmaker, you can directly influence how meaningful connections are made.
 
-# Contributions
+# contributing
 
 - Fork the repository 
 - Create a feature branch 
