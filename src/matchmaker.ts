@@ -1,4 +1,4 @@
-import {FindUser, SearchFilter, User} from "./index";
+import {FindUser, SearchFilter, User} from "./types";
 
 /*
 * Copyright (c) 2025 OpenDating
