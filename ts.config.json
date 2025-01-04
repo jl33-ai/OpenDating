@@ -15,7 +15,9 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"]
+      "@src/*": [
+        "src/*"
+      ]
     }
   },
   "include": ["src/**/*"],
