@@ -16,7 +16,7 @@
 
 # Quick links 🔗
 - [Start using OpenDating via the API](https://jl33-ai.github.io/opendating/)
-- [Contribute to the algorithm used to generate recommended profiles](https://github.com/jl33-ai/OpenDating/blob/main/src/matchmaker.ts) 
+- [Contribute to the algorithm used to generate recommended profiles](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts) 
 
 # About
 OpenDating makes all account data available, and uses an open-source and collaborative algorithm for matchmaking. We believe that relationships online should be completely transparent and secure.

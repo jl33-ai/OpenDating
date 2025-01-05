@@ -6,7 +6,7 @@ info:
     
     No b*llshit - see all of your data.
     
-    The [algorithm](https://github.com/jl33-ai/OpenDating) powering the matchmaking is publicly available and community-driven.
+    The [algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts) powering the matchmaking is publicly available and community-driven.
 
   # [App store](https://github.com/swagger-api/swagger-petstore)
   # [Original HN Post]()
@@ -165,7 +165,7 @@ paths:
         - matching
       security:
         - bearerAuth: [ ]
-      description: Get a list of potential matches. View the matchmaking algorithm [here](https://github.com/jl33-ai/OpenDating/blob/main/src/matchmaker.ts).
+      description: Get a list of potential matches. View the matchmaking algorithm [here](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts).
       responses:
         '200':
           description: 'List of suggested profiles'

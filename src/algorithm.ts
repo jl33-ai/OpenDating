@@ -2,7 +2,7 @@ import {FindUser, SearchFilter, User} from "./types";
 
 /*
 * Copyright (c) 2025 OpenDating
-* The algorithm used to generate suggestions the current user (currentUser)
+* This is the algorithm used to generate suggestions the current user (currentUser)
 * In other words, the algorithm that decides who you see on Tinder
 *
 * @note The result will always exclude the current user and existing users,
