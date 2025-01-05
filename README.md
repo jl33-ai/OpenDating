@@ -2,7 +2,7 @@
 
   <img width="140" src="./assets/logo-color.png"  alt="OpenDating Logo"/>
   <h2 align="center">OpenDating</h2>
-<p><strong>Open</strong>Dating is an open-source dating app accessible through a <a href="https://jl33-ai.github.io/opendating/">simple API</a>.</p>
+<p>An open-source and collaborative dating app.</p>
 </div>
 <div align="center">
 
@@ -14,10 +14,11 @@
 </a>
 </div>
 
+# Quick links 🔗
+- [Start using OpenDating via the API](https://jl33-ai.github.io/opendating/)
+- [Contribute to the algorithm used to generate recommended profiles](https://github.com/jl33-ai/OpenDating/blob/main/src/matchmaker.ts) 
+
 # About
 OpenDating makes all account data available, and uses an open-source and collaborative algorithm for matchmaking. We believe that relationships online should be completely transparent and secure.
 
-# Quick links 🔗
-- [Start using OpenDating](https://jl33-ai.github.io/opendating/)
-- [Contribute to the algorithm used to generate recommended profiles](https://github.com/jl33-ai/OpenDating/blob/main/src/matchmaker.ts) 
 
