@@ -2,11 +2,42 @@ openapi: 3.0.3
 info:
   title: OpenDating
   description: |-
-    OpenDating is a headless dating app. 
+    <div class="header">
+      <img 
+        width="140" 
+        src="https://github.com/jl33-ai/OpenDating/blob/main/assets/logo-color.png" 
+        alt="OpenDating Logo"
+      />
+      <h1>OpenDating</h1>
+      <p>An open-source and collaborative dating app.</p>
+    </div>
     
-    No b*llshit - see all of your data.
+    <div class="badges">
+      <a href="https://github.com/jl33-ai/OpenDating/stargazers">
+        <img src="https://img.shields.io/github/stars/jl33-ai/OpenDating" alt="GitHub stars"/>
+      </a>
+      <a href="https://github.com/jl33-ai/OpenDating/issues">
+        <img src="https://img.shields.io/github/issues/jl33-ai/OpenDating" alt="GitHub issues"/>
+      </a>
+      <a href="https://github.com/jl33-ai/OpenDating/blob/main/LICENSE">
+        <img src="https://img.shields.io/github/license/jl33-ai/OpenDating" alt="License"/>
+      </a>
+      <a href="https://github.com/sponsors/ryo-ma">
+        <img 
+          src="https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4" 
+          alt="Sponsor"
+        />
+      </a>
+    </div>
     
-    The [algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts) powering the matchmaking is publicly available and community-driven.
+    <div class="content">
+      <p>No b*llshit: see all of your data. The <a href="https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts">algorithm</a> powering the matchmaking is publicly available and community-driven.</p>
+    
+      <div class="getting-started">
+        <h2>Getting Started</h2>
+        <p>Make a GET request to <code>/api/auth</code> to create an account.</p>
+      </div>
+    </div>
 
   # [App store](https://github.com/swagger-api/swagger-petstore)
   # [Original HN Post]()
