@@ -2,35 +2,31 @@ openapi: 3.0.3
 info:
   title: OpenDating
   description: |-
-    OpenDating: Take control of your dating life (well, the front end at least).
+    OpenDating is a headless dating app. 
     
-    A headless dating app. No b*llshit - see exactly how many swipes you received. 
-    
-    **Step 1:** Create an account by verifying your phone number.
-    
-    **Step 2:** Add information to your profile
+    No b*llshit - see exactly how many swipes you received. 
     
     - [App store](https://github.com/swagger-api/swagger-petstore)
     - [Original HN Post]()
-  termsOfService: http://swagger.io/terms/
+
   contact:
     email: justin.supergame@gmail.com
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.2
+  # license:
+  #   name: MIT
+  #   url: https://github.com/jl33-ai/OpenDating/blob/main/LICENSE
+  version: 1.0.1
 externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
+  description: View and contribute to the matchmaking algorithm
+  url: https://github.com/jl33-ai/OpenDating
 servers:
   - url: http://192.168.1.146:3000/api
 tags:
   - name: auth
-    description: Create a new account and get an API token
+    description: Create a new account or sign in
   - name: profile
     description: View or update your account
   - name: matching
-    description: For swiping and matching
+    description: For swiping and matching with other profiles
 paths:
   /profile:
     get:
@@ -38,7 +34,7 @@ paths:
         - profile
       security:
         - bearerAuth: [ ]
-      description: Get your own profile
+      description: See your profile information
       responses:
         '200':
           description: 'Returns your profile'
@@ -47,7 +43,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Profile'
         '401':
-          description: 'Not authorized (no token)'
+          description: 'Not authorized'
           content:
             application/json:
               schema:
@@ -57,7 +53,7 @@ paths:
         - profile
       security:
         - bearerAuth: [ ]
-      description: Update your profile. `first_name`, `date_of_birth`, and `phone_number` cannot be changed once created. Location can only be updated once per week
+      description: Update your profile information
       requestBody:
         $ref: '#/components/requestBodies/Profile'
       responses:
@@ -67,14 +63,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Profile'
-        '400':
-          description: 'Invalid input'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
 
             # /profile/status:
             #   get:
@@ -89,7 +77,7 @@ paths:
             #         content:
             #           application/json:
             #             schema:
-          #               type: object
+            #               type: object
           #               properties:
           #                 is_valid: boolean
           #                 missing_fields:
@@ -103,8 +91,6 @@ paths:
     #     description: Returns your statistics. No b*llshit - see exactly how many `RIGHT` and `LEFT` swipes your profile received. See when your account was created
     #     responses:
 
-
-
   /matches:
     get:
       tags:
@@ -112,9 +98,7 @@ paths:
       security:
         - bearerAuth: [ ]
       description: >
-        Get recent matches, sorted by match date (newest first).
         Returns a paginated list of profiles you've matched with.
-        Uses simple offset/limit based pagination.
       parameters:
         - name: limit
           in: query
@@ -135,7 +119,7 @@ paths:
             default: 0
       responses:
         '200':
-          description: 'Recent matches'
+          description: 'Your recent matches'
           content:
             application/json:
               schema:
@@ -172,12 +156,29 @@ paths:
                         nullable: true
                         description: Offset for the next page (null if no more matches)
                         example: 20
-        '401':
-          description: Not authorized
+
+  /suggestions:
+    get:
+      tags:
+        - matching
+      security:
+        - bearerAuth: [ ]
+      description: Get a list of potential matches. View the matchmaking algorithm [here](https://github.com/jl33-ai/OpenDating/blob/main/src/matchmaker.ts).
+      responses:
+        '200':
+          description: 'List of suggested profiles'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Here are your suggestions. Hint: submit preferences at POST /matches, using the provided id.'
+                  suggestions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProfileSuggestion'
 
   /suggestions/{id}/{direction}:
     post:
@@ -185,17 +186,16 @@ paths:
         - matching
       summary: Submit a swipe decision
       description: >
-        Submit a swipe decision on a profile. The profile must have been previously
-        received from the suggestions feed (GET /suggestions). A right swipe indicates interest, while
+        Submit a _**swipe**_ on a profile. A right swipe indicates interest, while
         a left swipe indicates disinterest.
-        
+        <br>
         Note: This action cannot be undone.
       security:
         - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
-          description: 'Profile ID from the suggestions feed'
+          description: 'Match ID from the `/suggestions` feed'
           required: true
           schema:
             type: string
@@ -248,57 +248,18 @@ paths:
                         description: When the match was formed
                       profile:
                         $ref: '#/components/schemas/ProfileMatch'
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /suggestions:
-    get:
-      tags:
-        - matching
-      security:
-        - bearerAuth: [ ]
-      description: Get profile suggestions based on age, location, and bio (in that order).
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 50
-            default: 20
-      responses:
-        '200':
-          description: 'List of suggested profiles'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: 'Here are your suggestions. Hint: submit preferences at POST /matches, using the provided id.'
-                  suggestions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ProfileSuggestion'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                # '400':
+                #   description: Invalid request
+                #   content:
+                #     application/json:
+                #       schema:
+                #         $ref: '#/components/schemas/Error'
 
   /auth/{phone_number}:
     get:
       tags:
         - auth
-      description: Request verification code for phone number. Phone number should be in standard string format with country code included.
+      description: Get a verification code sent to your phone number. Phone number should be in standard string format with country code included.
       parameters:
         - name: phone_number
           in: path
@@ -329,7 +290,7 @@ paths:
     get:
       tags:
         - auth
-      description: Verify phone number and get authentication token
+      description: Submit verification code and get your token
       parameters:
         - name: phone_number
           in: path
@@ -356,19 +317,8 @@ paths:
                     example: 'Verification successful. Hint: Put your new token in the Headers of subsequent requests. Try GET /suggestions next.'
                   token:
                     type: string
+                    example: 'SECRET_TOKEN'
                     description: JWT token for authentication
-        '400':
-          description: 'Invalid input'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: 'Verification service error'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
 
 components:
   properties:
@@ -456,8 +406,6 @@ components:
           $ref: '#/components/properties/dateOfBirth'
         location:
           $ref: '#/components/properties/location'
-        expires_at:
-          $ref: '#/components/properties/expiresAt'
         created_at:
           $ref: '#/components/properties/createdAt'
 
@@ -539,8 +487,6 @@ components:
                 $ref: '#/components/properties/photos'
               location:
                 $ref: '#/components/properties/location'
-              expires_at:
-                $ref: '#/components/properties/expiresAt'
               created_at:
                 $ref: '#/components/properties/createdAt'
 
