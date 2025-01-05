@@ -4,13 +4,15 @@ info:
   description: |-
     OpenDating is a headless dating app. 
     
-    No b*llshit - see exactly how many swipes you received. 
+    No b*llshit - see all of your data.
     
-    - [App store](https://github.com/swagger-api/swagger-petstore)
-    - [Original HN Post]()
+    The [algorithm](https://github.com/jl33-ai/OpenDating) powering the matchmaking is publicly available and community-driven.
 
-  contact:
-    email: justin.supergame@gmail.com
+  # [App store](https://github.com/swagger-api/swagger-petstore)
+  # [Original HN Post]()
+
+  # contact:
+  #   email: justin.supergame@gmail.com
   # license:
   #   name: MIT
   #   url: https://github.com/jl33-ai/OpenDating/blob/main/LICENSE
@@ -19,7 +21,7 @@ externalDocs:
   description: View and contribute to the matchmaking algorithm
   url: https://github.com/jl33-ai/OpenDating
 servers:
-  - url: http://192.168.1.146:3000/api
+  - url: https://open-dating/api
 tags:
   - name: auth
     description: Create a new account or sign in
