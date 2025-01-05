@@ -2,13 +2,12 @@ openapi: 3.0.3
 info:
   title: OpenDating
   description: |-
-    <div class="header">
+    <div class="header" style="float: left;">
       <img 
         width="140" 
-        src="https://github.com/jl33-ai/OpenDating/blob/main/assets/logo-color.png" 
+        src="https://github.com/jl33-ai/OpenDating/blob/main/assets/logo-color.png?raw=true" 
         alt="OpenDating Logo"
       />
-      <h1>OpenDating</h1>
       <p>An open-source and collaborative dating app.</p>
     </div>
     
