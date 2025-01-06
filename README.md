@@ -16,7 +16,7 @@
 
 # quick start
 
-[Go here](https://jl33-ai.github.io/opendating/) to see how to create an account and read the API spec.
+[Create an account](https://jl33-ai.github.io/opendating/) and read the API spec.
 
 # contributing
 **NOTE:** This repository only contains the **[matchmaking algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts)**. The backend is private for security reasons.
