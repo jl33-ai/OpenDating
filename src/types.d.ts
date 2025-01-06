@@ -27,6 +27,13 @@ export interface User {
    * @note Currently limited to binary options, will expand in future
    */
   gender: 'male' | 'female';
+
+  /**
+   * A list of image urls provided by the user
+   * @maxLength: 6 photos
+   * @note Must follow regex: /^https?:\/\/.+\/.+\.(jpg|jpeg|png|gif|webp)$/i
+   */
+  photos: string[];
 }
 
 /**
