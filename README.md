@@ -20,7 +20,7 @@
 3. Start contributing!
 
 ## contributing
-This repository contains only the [matchmaking algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts). The backend remains private for security.
+This repository contains only the [matchmaking algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts). The backend is private for security.
 
 You can help improve the algorithm by:
 - Opening a [Pull Request]()
