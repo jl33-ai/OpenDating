@@ -20,9 +20,8 @@ Make a `GET` request to `https://sg-server-5ime.onrender.com/api/auth/{phoneNumb
 
 
 # links 🔗
-- Start using OpenDating [via the API](https://jl33-ai.github.io/opendating/)
-- Contribute to the [algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts) 
- used to generate recommended profiles
+- Start using it [via the API](https://jl33-ai.github.io/opendating/)
+- Contribute to the matchmaking [algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts) or [suggest changes](https://github.com/jl33-ai/OpenDating/issues/new)
 
 
 # about
