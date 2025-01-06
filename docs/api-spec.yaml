@@ -80,7 +80,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    put:
+    patch:
       tags:
         - profile
       security:
@@ -513,14 +513,18 @@ components:
           schema:
             type: object
             properties:
+              first_name:
+                $ref: '#/components/properties/firstName'
               bio:
                 $ref: '#/components/properties/bio'
+              phone_number:
+                $ref: '#/components/properties/phoneNumber'
               photos:
                 $ref: '#/components/properties/photos'
+              date_of_birth:
+                $ref: '#/components/properties/dateOfBirth'
               location:
                 $ref: '#/components/properties/location'
-              created_at:
-                $ref: '#/components/properties/createdAt'
 
   securitySchemes:
     bearerAuth:
