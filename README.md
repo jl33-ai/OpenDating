@@ -16,7 +16,7 @@
 
 # quick start
 
-Make a `GET` request to `https://sg-server-5ime.onrender.com/api/auth/{phoneNumber}` to create an account. [View the API spec](https://jl33-ai.github.io/opendating/)
+[Go here](https://jl33-ai.github.io/opendating/) to see how to create an account and read the API spec.
 
 # contributing
 **NOTE:** This repository only contains the **[matchmaking algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts)**. The backend is private for security reasons.
