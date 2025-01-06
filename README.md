@@ -16,15 +16,16 @@
 
 # quick start
 
-Make a `GET` request to `https://sg-server-5ime.onrender.com/api/auth/{phoneNumber}` to create an account.
-
-
-# links 🔗
-- Start using it [via the API](https://jl33-ai.github.io/opendating/)
-- Contribute to the matchmaking [algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts) or [suggest changes](https://github.com/jl33-ai/OpenDating/issues/new)
-
+Make a `GET` request to `https://sg-server-5ime.onrender.com/api/auth/{phoneNumber}` to create an account. [View the API spec](https://jl33-ai.github.io/opendating/)
 
 # about
 OpenDating makes all account data available, and uses an open-source and collaborative algorithm for matchmaking. We believe that relationships online should be completely transparent and secure.
 
+# contributing
+**NOTE:** This repository only contains the **[matchmaking algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts)**.
+The backend is private for security reasons.
+
+Suggest improvements to the [algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts) by either [raising a PR]() or [submitting an issue](https://github.com/jl33-ai/OpenDating/issues/new)
+
+View [CONTRIBUTING.md]() for more information on how to run locally and contribute.
 
