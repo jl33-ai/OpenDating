@@ -20,37 +20,37 @@ import { FindUser, SearchFilter } from '@src/types';
  * @returns Promise<User[]> - Array of suggested users matching the criteria
  */
 export async function findSuggestedUsers(
-  findUsers: FindUser,
-  currentUser: User,
+    findUsers: FindUser,
+    currentUser: User,
 ): Promise<User[]> {
-  const MAX_SEARCH_RADIUS = 50000; // KM
+    const MAX_SEARCH_RADIUS = 50000; // KM
 
-  /**
-   * Geographic proximity filter using MongoDB's $geoNear operator
-   * Creates a spherical search area centered on the current user's location
-   */
-  const filterByDistanceFromCurrentUser: SearchFilter = {
-    $geoNear: {
-      near: {
-        type: 'Point',
-        coordinates: currentUser.location,
-      },
-      distanceField: 'distance',
-      spherical: true,
-      maxDistance: MAX_SEARCH_RADIUS * 1000, // Convert to meters
-      key: 'location',
-    },
-  };
+    /**
+     * Geographic proximity filter using MongoDB's $geoNear operator
+     * Creates a spherical search area centered on the current user's location
+     */
+    const filterByDistanceFromCurrentUser: SearchFilter = {
+        $geoNear: {
+            near: {
+                type: 'Point',
+                coordinates: currentUser.location,
+            },
+            distanceField: 'distance',
+            spherical: true,
+            maxDistance: MAX_SEARCH_RADIUS * 1000, // Convert to meters
+            key: 'location',
+        },
+    };
 
-  /**
-   * Gender preference filter
-   * Matches users based on the current user's gender preferences
-   */
-  const filterByGender: SearchFilter = {
-    $match: {
-      gender: currentUser.gender,
-    },
-  };
+    /**
+     * Gender preference filter
+     * Matches users based on the current user's gender preferences
+     */
+    const filterByGender: SearchFilter = {
+        $match: {
+            gender: currentUser.gender,
+        },
+    };
 
-  return findUsers([filterByDistanceFromCurrentUser, filterByGender]);
+    return findUsers([filterByDistanceFromCurrentUser, filterByGender]);
 }
