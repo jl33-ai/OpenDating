@@ -23,7 +23,7 @@
 This repository contains only the [matchmaking algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts). The backend is private for security.
 
 You can help improve the algorithm by:
-- Opening a [Pull Request]()
+- Opening a [Pull Request](https://github.com/jl33-ai/OpenDating/pulls)
 - Creating an [Issue](https://github.com/jl33-ai/OpenDating/issues/new)
 
-See [CONTRIBUTING.md]() for local setup and [ABOUT.md]() for project details.
+See [CONTRIBUTING.md](https://github.com/jl33-ai/OpenDating/blob/main/CONTRIBUTING.md) for local setup and [ABOUT.md](https://github.com/jl33-ai/OpenDating/blob/main/ABOUT.md) for project details.
