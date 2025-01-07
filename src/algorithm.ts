@@ -1,4 +1,5 @@
 import { FindUser, SearchFilter, User } from "./types";
+import {EARTH_RADIUS} from "@src/constants";
 
 /**
  * User suggestion algorithm for the OpenDating platform.
@@ -22,7 +23,9 @@ export async function findSuggestedUsers(
     findUsers: FindUser,
     currentUser: User
 ): Promise<User[]> {
-  const MAX_SEARCH_RADIUS = 50000; // KM
+  // OpenDating has <100 users.
+  // For now, someone on the North Pole WILL match with someone on the South Pole.
+  const MAX_SEARCH_RADIUS = EARTH_RADIUS * 2;
 
   /**
    * Geographic proximity filter using MongoDB's $geoNear operator
