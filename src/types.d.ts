@@ -1,40 +1,4 @@
-/**
- * Represents a matchable user profile in the OpenDating platform.
- * Contains all essential attributes used for the matching algorithm.
- *
- * @interface User
- */
-export interface User {
-  /**
-   * User's self-description or biography
-   * @maxLength 280 characters
-   * @example "Passionate about hiking and photography"
-   */
-  bio: string;
-
-  /**
-   * Geographic coordinates in [longitude, latitude] format
-   * Stored as GeoJSON Point coordinates
-   * @type {[longitude: number, latitude: number]}
-   * @example [18.0686, 59.3293] // Stockholm, Sweden
-   * @note Longitude range: -180 to 180
-   * @note Latitude range: -90 to 90
-   */
-  location: number[];
-
-  /**
-   * User's gender identity
-   * @note Currently limited to binary options, will expand in future
-   */
-  gender: 'male' | 'female';
-
-  /**
-   * A list of image urls provided by the user
-   * @maxLength: 6 photos
-   * @note Must follow regex: /^https?:\/\/.+\/.+\.(jpg|jpeg|png|gif|webp)$/i
-   */
-  photos: string[];
-}
+import { User } from '@src/model/user';
 
 /**
  * Represents a MongoDB query filter used for searching users

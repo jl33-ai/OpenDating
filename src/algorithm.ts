@@ -1,4 +1,5 @@
-import { FindUser, SearchFilter, User } from './types';
+import { User } from '@src/model/user';
+import { FindUser, SearchFilter } from '@src/types';
 
 /**
  * User suggestion algorithm for the OpenDating platform.
