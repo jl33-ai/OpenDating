@@ -1,4 +1,4 @@
-import { FindUser, SearchFilter, User } from "./types";
+import { FindUser, SearchFilter, User } from './types';
 
 /**
  * User suggestion algorithm for the OpenDating platform.
@@ -19,8 +19,8 @@ import { FindUser, SearchFilter, User } from "./types";
  * @returns Promise<User[]> - Array of suggested users matching the criteria
  */
 export async function findSuggestedUsers(
-    findUsers: FindUser,
-    currentUser: User
+  findUsers: FindUser,
+  currentUser: User,
 ): Promise<User[]> {
   const MAX_SEARCH_RADIUS = 50000; // KM
 
@@ -51,8 +51,5 @@ export async function findSuggestedUsers(
     },
   };
 
-  return findUsers([
-    filterByDistanceFromCurrentUser,
-    filterByGender,
-  ]);
+  return findUsers([filterByDistanceFromCurrentUser, filterByGender]);
 }

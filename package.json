@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
@@ -38,5 +39,10 @@
     "algorithm"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@types/mongoose": "^5.11.96",
+    "mongodb-memory-server": "^10.1.3",
+    "mongoose": "^8.9.3"
+  }
 }
