@@ -14,7 +14,7 @@
 </a>
 </div>
 
-## quick start
+## quick create
 1. [Create an account](https://jl33-ai.github.io/opendating/)
 2. Review the [API documentation](https://jl33-ai.github.io/opendating/)
 3. Start contributing!
