@@ -1,13 +1,7 @@
 import * as mongoose from 'mongoose';
+import { LocationSchema } from '@src/model/GeoLocation';
 
-/**
- * A simple representation of a user profile in the OpenDating platform.
- * Only contains attributes relevant to the matching algorithm.
- * Any algorithm which wishes to matchmake should use this schema.
- *
- * @interface User
- */
-const schema = new mongoose.Schema({
+export const schema = new mongoose.Schema({
     /**
      * User's self-description or biography
      * @maxLength 280 characters
@@ -28,17 +22,11 @@ const schema = new mongoose.Schema({
     first_name: String,
 
     /**
-     * A list of genders that the user identifies as
+     * The gender that the user identifies as
      * @note Currently limited to binary options, will expand in future
-     * @example ['female']
+     * @example 'female'
      */
-    gender: [String],
-
-    /**
-     * User's last name
-     * @example "Smith"
-     */
-    last_name: String,
+    gender: String,
 
     /**
      * Geographic coordinates in [longitude, latitude] format
@@ -48,7 +36,22 @@ const schema = new mongoose.Schema({
      * @note Longitude range: -180 to 180
      * @note Latitude range: -90 to 90
      */
-    location: [Number],
+    location: {
+        type: LocationSchema,
+        default: null,
+        get: function (loc) {
+            return loc ? loc.coordinates : undefined;
+        },
+        set: function (loc) {
+            if (Array.isArray(loc)) {
+                return {
+                    type: 'Point',
+                    coordinates: loc,
+                };
+            }
+            return loc;
+        },
+    },
 
     /**
      * A list of image urls provided by the user
@@ -65,6 +68,6 @@ const schema = new mongoose.Schema({
     preferred_genders: [String],
 });
 
-export const UserModel = mongoose.model('User', schema);
+schema.index({ location: '2dsphere' });
 
-export type User = mongoose.InferSchemaType<typeof schema>;
+export const UserModel = mongoose.model('User', schema);
