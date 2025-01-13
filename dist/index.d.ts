@@ -1,3 +1,3 @@
 export * from './types';
-export * from './matchmaker';
+export * from './algorithm';
 //# sourceMappingURL=index.d.ts.map
