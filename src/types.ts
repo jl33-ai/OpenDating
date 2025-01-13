@@ -37,6 +37,6 @@ export type SearchFilter = object;
  * @returns Array of users matching all the specified filters
  */
 export type QueryExecutor = (
-    targetUser: User,
+    targetUser: UserDocument,
     rules: SearchFilter[],
-) => Promise<User[]>;
+) => Promise<UserDocument[]>;

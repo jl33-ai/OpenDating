@@ -1,4 +1,4 @@
-import { QueryExecutor, SearchFilter, User } from '@src/types';
+import { QueryExecutor, SearchFilter, User, UserDocument } from '@src/types';
 
 /**
  * User suggestion algorithm for the OpenDating platform.
@@ -19,9 +19,9 @@ import { QueryExecutor, SearchFilter, User } from '@src/types';
  * @returns Promise<User[]> - Array of suggested users matching the criteria
  */
 export async function findRecommendedUsers(
-    targetUser: User,
+    targetUser: UserDocument,
     queryExecutor: QueryExecutor,
-): Promise<User[]> {
+): Promise<UserDocument[]> {
     const MAX_SEARCH_RADIUS = 50000; // KM
 
     /**
