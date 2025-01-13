@@ -1,5 +1,4 @@
-import { User } from '@src/model/user';
-import { FindUser, SearchFilter } from '@src/types';
+import { QueryExecutor, SearchFilter, User } from '@src/types';
 
 /**
  * User suggestion algorithm for the OpenDating platform.
@@ -11,17 +10,17 @@ import { FindUser, SearchFilter } from '@src/types';
  *
  * @copyright (c) 2025 OpenDating
  *
- * @param findUsers - Function to query the user database with specified filters
- * @param currentUser - The user for whom suggestions are being generated
+ * @param queryExecutor - Function to query the user database with specified filters
+ * @param targetUser - The user for whom suggestions are being generated
  *
  * @note Results automatically exclude the current user and their existing matches
  * @note Distance calculations use spherical geometry for accuracy
  *
  * @returns Promise<User[]> - Array of suggested users matching the criteria
  */
-export async function findSuggestedUsers(
-    findUsers: FindUser,
-    currentUser: User,
+export async function findRecommendedUsers(
+    targetUser: User,
+    queryExecutor: QueryExecutor,
 ): Promise<User[]> {
     const MAX_SEARCH_RADIUS = 50000; // KM
 
@@ -33,7 +32,7 @@ export async function findSuggestedUsers(
         $geoNear: {
             near: {
                 type: 'Point',
-                coordinates: currentUser.location,
+                coordinates: targetUser.location,
             },
             distanceField: 'distance',
             spherical: true,
@@ -48,9 +47,12 @@ export async function findSuggestedUsers(
      */
     const filterByGender: SearchFilter = {
         $match: {
-            gender: currentUser.gender,
+            gender: targetUser.gender,
         },
     };
 
-    return findUsers([filterByDistanceFromCurrentUser, filterByGender]);
+    return queryExecutor(targetUser, [
+        filterByDistanceFromCurrentUser,
+        filterByGender,
+    ]);
 }
