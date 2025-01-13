@@ -24,7 +24,7 @@ describe('findSuggestedUsers', () => {
         await database.stop();
     });
 
-    it('With a normal white male', async () => {
+    it('With a normal male', async () => {
         const result = await match(
             {
                 bio: 'Adventure seeker and coffee enthusiast. Always looking for the next mountain to climb! 📸',
