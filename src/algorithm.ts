@@ -1,25 +1,20 @@
-import { QueryExecutor, SearchFilter, User, UserDocument } from '@src/types';
+import { QueryExecutor, SearchFilter, UserDocument } from '@src/types';
 
 /**
- * User suggestion algorithm for the OpenDating platform.
- * Generates potential matches for users based on proximity and preferences.
- *
- * Algorithm Overview:
- * 1. Filters users within a specified geographic radius
- * 2. Applies gender preference filtering
- *
+ * Recommendation algorithm for the OpenDating platform.
+ * Finds matches for a single user based on their attributes.
  * @copyright (c) 2025 OpenDating
  *
+ * @param user - The user for whom suggestions are being generated
  * @param queryExecutor - Function to query the user database with specified filters
- * @param targetUser - The user for whom suggestions are being generated
  *
  * @note Results automatically exclude the current user and their existing matches
  * @note Distance calculations use spherical geometry for accuracy
  *
- * @returns Promise<User[]> - Array of suggested users matching the criteria
+ * @returns Promise<UserDocument[]> - Array of suggested users matching the criteria
  */
 export async function findRecommendedUsers(
-    targetUser: UserDocument,
+    user: UserDocument,
     queryExecutor: QueryExecutor,
 ): Promise<UserDocument[]> {
     const MAX_SEARCH_RADIUS = 50000; // KM
@@ -32,7 +27,7 @@ export async function findRecommendedUsers(
         $geoNear: {
             near: {
                 type: 'Point',
-                coordinates: targetUser.location,
+                coordinates: user.location,
             },
             distanceField: 'distance',
             spherical: true,
@@ -47,11 +42,11 @@ export async function findRecommendedUsers(
      */
     const filterByGender: SearchFilter = {
         $match: {
-            gender: targetUser.gender,
+            gender: user.gender,
         },
     };
 
-    return queryExecutor(targetUser, [
+    return queryExecutor(user, [
         filterByDistanceFromCurrentUser,
         filterByGender,
     ]);
