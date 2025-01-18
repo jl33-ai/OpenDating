@@ -14,12 +14,12 @@
 </a>
 </div>
 
-## quick create
+## Quick start
 1. [Create an account](https://jl33-ai.github.io/opendating/)
 2. Review the [API documentation](https://jl33-ai.github.io/opendating/)
 3. Start contributing!
 
-## contributing
+## Contributing
 This repository contains only the [matchmaking algorithm](https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts). The backend is private for security.
 
 You can help improve the algorithm by:
