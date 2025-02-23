@@ -30,11 +30,11 @@ info:
     </div>
     
     <div class="content">
-      <p>No b*llshit: see all of your data. The <a href="https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts">algorithm</a> powering the matchmaking is publicly available and community-driven.</p>
+      <p>See 100% of your data. The <a href="https://github.com/jl33-ai/OpenDating/blob/main/src/algorithm.ts">algorithm</a> powering the matchmaking is publicly available and community-driven.</p>
     
       <div class="getting-started">
         <h2>Getting Started</h2>
-        <p>Make a GET request to <code>https://sg-server-5ime.onrender.com/api/auth/{phoneNumber}</code> to create an account.</p>
+        <p>First step, make a GET request to <code>https://sg-server-5ime.onrender.com/api/auth/{phoneNumber}</code> to create an account.</p>
       </div>
     </div>
 
